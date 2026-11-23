@@ -25,6 +25,7 @@
 - 함께 고칠 곳: 상단 note의 글 수와 갱신일, meta description과 og:description, JSON-LD(dateModified, isBasedOn, ItemList 순번)
 - 종목 목록 `/stock/index.html`: 해당 종목을 맨 위로 올리고 글 수와 최근일 갱신
 - 첫 화면 `/index.html`: 「최근 분석한 종목은?」 10개를 최근 순으로 유지. ul의 class(개편 후 stocks)와 li 마크업은 기존 항목을 그대로 따름
+- 새 종목 페이지가 생기면 첫 화면의 종목 수 두 곳(히어로 칩의 `<b>숫자</b>개 종목 분석`, 종목분석 카드의 `<p class="big">숫자<small>개 종목</small>`)을 stock 폴더의 종목 페이지 수(index.html 제외)로 갱신
 - 원문 제목의 가운데 점(·)은 쉼표로 바꿔 적음 (사이트 전체 규칙)
 
 ## 3. 새 종목 페이지
