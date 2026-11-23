@@ -8,7 +8,7 @@
   python3 _ops/sync.py sitemap URL...   # sitemap.xml에 주소 추가 또는 lastmod를 오늘로 갱신
   python3 _ops/sync.py indexnow URL...  # IndexNow(빙, 네이버 등)에 변경 주소 통보
   python3 _ops/sync.py done LOGNO...    # 처리 완료 표시 (state.json)
-  python3 _ops/sync.py lists           # 강의, 모의펀드, ETF 목록 페이지 재생성 (/lecture/, /fund/, /etf/)
+  python3 _ops/sync.py lists           # 강의, 모의펀드, ETF, 리포트 브리핑 목록 페이지 재생성 (/lecture/, /fund/, /etf/, /brief/)
 """
 import datetime as dt, html, json, os, re, sys, urllib.parse, urllib.request
 
@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE = os.path.join(ROOT, "_ops", "state.json")
 KST = dt.timezone(dt.timedelta(hours=9))
 BLOG = "journk"
-CATS = {"14": "종목분석", "13": "ETF", "18": "주린이 강의", "19": "모의펀드"}
+CATS = {"14": "종목분석", "13": "ETF", "18": "주린이 강의", "19": "모의펀드", "25": "증권사 리포트 브리핑"}
 
 
 def get(url):
@@ -134,6 +134,9 @@ SECTIONS = {
     "etf": {"cat": "13", "name": "ETF 투자", "title": "ETF 투자 글 목록",
             "desc": "가치투자자 프레디의 ETF 분석과 투자 이야기 전체 목록. 원문은 네이버 블로그에서 읽을 수 있습니다.",
             "intro": "여러 종목을 한 바구니에 담는 ETF를 분석한 글을 최근 순으로 모았습니다. 제목을 누르면 네이버 블로그 원문으로 이동합니다."},
+    "brief": {"cat": "25", "name": "증권사 리포트 브리핑", "title": "증권사 리포트 브리핑 목록",
+              "desc": "그날 나온 증권사 리포트를 가치투자자 프레디가 요약하고 정리한 「증권사 리포트 브리핑」 전체 목록. 원문은 네이버 블로그에서 읽을 수 있습니다.",
+              "intro": "그날 나온 증권사 리포트를 읽고 시장 전망, 금리와 환율, 섹터, 눈에 띈 종목을 요약한 브리핑을 최근 순으로 모았습니다. 리포트 원문은 싣지 않고 출처만 밝힙니다. 제목을 누르면 네이버 블로그 원문으로 이동합니다."},
 }
 
 
