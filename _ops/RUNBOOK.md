@@ -2,6 +2,14 @@
 
 매일 오전 예약 작업이 이 문서를 따라 블로그 새 글을 사이트에 반영함. `_ops/` 폴더는 밑줄로 시작해 GitHub Pages에 게시되지 않음.
 
+## 자동 실행 (2026.11.23부터)
+- 프레디 PC의 Windows 예약 작업 「valuelens사이트갱신」(매일 09:00, 21:00)이 `python _ops/auto.py`를 실행함. Claude 예약 작업은 쓰지 않음
+- 코드가 하는 일: 목록 페이지(18, 19, 13, 25), 사이트맵, IndexNow, 처리 표시 → main 바로 반영
+- DeepSeek가 하는 일: 페이지가 있는 종목의 새 글 → 최신 판단 상자와 글 카드 문장. 코드가 숫자 원문 대조와 원문 복제(45자) 검사를 한 뒤 `auto/<logNo>` PR로 올림
+- Claude가 하는 일: 자동 PR 감수(아래 2장 규칙 기준), 새 종목 페이지(3장), 보류(pending) 글 처리
+- 실행 기록: `G:\내 드라이브0_투자aluelens_sync\last_run.log`
+- 아래 1~4장은 Claude가 직접 처리할 때와 자동 PR을 감수할 때의 기준으로 계속 씀
+
 ## 0. 준비
 - main 최신 상태에서 시작: `git fetch origin main && git checkout -B sync-work origin/main`
 - 대상 글 조회: `python3 _ops/sync.py list` (기준선 이후 글 중 processed가 false인 것만 처리)
