@@ -26,12 +26,12 @@
 - 함께 고칠 곳: 상단 note의 글 수와 갱신일, meta description과 og:description, JSON-LD(dateModified, isBasedOn, ItemList 순번)
 - 종목 목록 `/stock/index.html`: 해당 종목을 맨 위로 올리고 글 수와 최근일 갱신
 - 첫 화면 `/index.html`: 「최근 분석한 종목은?」 10개를 최근 순으로 유지. ul의 class(개편 후 stocks)와 li 마크업은 기존 항목을 그대로 따름
-- 새 종목 페이지가 생기면 첫 화면의 종목 수 두 곳(히어로 칩의 `<b>숫자</b>개 종목 분석`, 종목분석 카드의 `<p class="big">숫자<small>개 종목</small>`)을 stock 폴더의 종목 페이지 수(index.html 제외)로 갱신
+- 새 종목 페이지가 생기면 첫 화면의 종목 수 두 곳(히어로 문장(p.count)의 `<b>숫자</b>개 종목 분석`, 종목분석 카드의 `<p class="big">숫자<small>개 종목</small>`)을 stock 폴더의 종목 페이지 수(index.html 제외)로 갱신
 - 원문 제목의 가운데 점(·)은 쉼표로 바꿔 적음 (사이트 전체 규칙)
 
 ## 3. 새 종목 페이지
 - 파일명 `stock/종목코드.html`, 기존 종목 페이지와 같은 틀(제목, 질문형 소제목 3개, 구조화 데이터, 하단 투자 권유 아님 안내)
-- head의 스타일 부분은 고정 틀을 쓰지 말고 main에 있는 기존 종목 페이지 head에서 그대로 복사함. 디자인 개편(PR #2) 병합 후에는 인라인 style 블록 대신 링크 묶음(og:image, theme-color, Noto Serif KR 폰트, /assets/site.css)을 씀
+- head의 스타일 부분은 고정 틀을 쓰지 말고 main에 있는 기존 종목 페이지 head에서 그대로 복사함. 디자인 개편(PR #2) 병합 후에는 인라인 style 블록 대신 링크 묶음(og:image, theme-color, 고운바탕(Gowun Batang) 폰트, /assets/site.css)을 씀
 - 「OO은 어떤 회사인가요?」에 블로그 원문에 없는 일반 정보를 쓰면 PR 설명과 보고에 확인 요청으로 표시함
 - 미리보기 캡처를 만들어 보고에 첨부
 
