@@ -25,6 +25,7 @@ KST = sync.KST
 LIST_CATS = {s["cat"] for s in sync.SECTIONS.values()}
 MODEL = "deepseek/deepseek-v4.1-flash-1017"
 TODAY = dt.datetime.now(KST).strftime("%Y-%m-%d")
+LOG = r"G:\내 드라이브0_투자aluelens_sync\last_run.log"
 
 
 # ---------- 공통 ----------
@@ -278,7 +279,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--test", metavar="LOGNO")
+    ap.add_argument("--log", action="store_true", help="출력을 실행 기록 파일(LOG)에도 저장 (예약 작업용)")
     a = ap.parse_args()
+    if a.log:
+        import io, traceback
+        buf, real = io.StringIO(), sys.stdout
+        sys.stdout = buf
+        try:
+            run(a)
+        except BaseException:
+            traceback.print_exc(file=buf)
+            raise
+        finally:
+            sys.stdout = real
+            open(LOG, "w", encoding="utf-8").write(buf.getvalue())
+            print(buf.getvalue())
+    else:
+        run(a)
+
+
+def run(a):
 
     if a.test:
         p = next(x for x in sync.all_posts() if x["logNo"] == a.test)
@@ -291,7 +311,7 @@ def main():
     log = [f"# valuelens 자동 갱신 {dt.datetime.now(KST):%Y-%m-%d %H:%M}", ""]
     if not a.dry_run:
         if git("status", "--porcelain"):
-            sys.exit("작업 폴더에 커밋 안 된 변경이 있어 멈춤")
+            raise SystemExit("작업 폴더에 커밋 안 된 변경이 있어 멈춤: " + git("status", "--porcelain"))
         git("fetch", "origin")
         git("checkout", "-B", "main", "origin/main")
 
