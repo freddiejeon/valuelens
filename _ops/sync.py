@@ -8,6 +8,7 @@
   python3 _ops/sync.py sitemap URL...   # sitemap.xml에 주소 추가 또는 lastmod를 오늘로 갱신
   python3 _ops/sync.py indexnow URL...  # IndexNow(빙, 네이버 등)에 변경 주소 통보
   python3 _ops/sync.py done LOGNO...    # 처리 완료 표시 (state.json)
+  python3 _ops/sync.py lists           # 강의, 모의펀드, ETF 목록 페이지 재생성 (/lecture/, /fund/, /etf/)
 """
 import datetime as dt, html, json, os, re, sys, urllib.parse, urllib.request
 
@@ -123,6 +124,91 @@ def indexnow(urls):
         print("IndexNow 응답", e.code, e.read()[:200])
 
 
+SECTIONS = {
+    "lecture": {"cat": "18", "name": "주식투자 강의", "title": "주린이 주식투자 강의 목록",
+                "desc": "가치투자자 프레디의 주린이 주식투자 강의와 특강 전체 목록. 각 강의는 네이버 블로그 원문에서 읽을 수 있습니다.",
+                "intro": "주식을 처음 시작하는 분을 위한 강의와 특강을 최근 순으로 모았습니다. 제목을 누르면 네이버 블로그 원문으로 이동합니다."},
+    "fund": {"cat": "19", "name": "모의투자", "title": "모의펀드 「프레디 가치망원경 1호」 운용보고 목록",
+             "desc": "1억원 모의펀드 「프레디 가치망원경 1호」의 주간 운용보고와 매매보고서 전체 목록. 원문은 네이버 블로그에서 읽을 수 있습니다.",
+             "intro": "1억원으로 시작한 모의펀드 「프레디 가치망원경 1호」의 운용보고와 매매보고서를 최근 순으로 모았습니다. 제목을 누르면 네이버 블로그 원문으로 이동합니다."},
+    "etf": {"cat": "13", "name": "ETF 투자", "title": "ETF 투자 글 목록",
+            "desc": "가치투자자 프레디의 ETF 분석과 투자 이야기 전체 목록. 원문은 네이버 블로그에서 읽을 수 있습니다.",
+            "intro": "여러 종목을 한 바구니에 담는 ETF를 분석한 글을 최근 순으로 모았습니다. 제목을 누르면 네이버 블로그 원문으로 이동합니다."},
+}
+
+
+def esc(t):
+    return html.escape(t, quote=True)
+
+
+def head_links():
+    """종목 페이지 head의 디자인 링크 묶음을 그대로 가져옴 (디자인 변경을 자동으로 따름)."""
+    src = open(os.path.join(ROOT, "stock", "000660.html"), encoding="utf-8").read()
+    h = src[:src.index("</head>")]
+    keep = [l for l in h.split("\n") if re.match(r'<(link rel="(preconnect|stylesheet)"|meta name="theme-color"|meta property="og:image|meta name="twitter:card")', l)]
+    style = re.search(r"<style>.*?</style>", h, re.S)
+    return "\n".join(keep) + ("\n" + style.group(0) if style else "")
+
+
+def lists(posts=None):
+    posts = posts or all_posts()
+    links = head_links()
+    for slug, sec in SECTIONS.items():
+        ps = [p for p in posts if str(p["category"]) == sec["cat"]]
+        url = f"https://valuelens.kr/{slug}/"
+        upd = ps[0]["date"] if ps else ""
+        items = [{"@type": "ListItem", "position": i + 1, "item": {"@type": "BlogPosting", "headline": p["title"].replace("·", ", "),
+                  "datePublished": p["date"], "url": p["url"], "author": {"@id": "https://valuelens.kr/#freddie"}}} for i, p in enumerate(ps)]
+        ld = {"@context": "https://schema.org", "@graph": [
+            {"@type": "CollectionPage", "@id": url, "url": url, "name": f"{sec['title']} | 프레디의 가치망원경", "description": sec["desc"],
+             "inLanguage": "ko-KR", "dateModified": upd, "isPartOf": {"@id": "https://valuelens.kr/#website"},
+             "author": {"@type": "Person", "@id": "https://valuelens.kr/#freddie", "name": "프레디 (전병각)"},
+             "mainEntity": {"@type": "ItemList", "numberOfItems": len(ps), "itemListElement": items}},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "홈", "item": "https://valuelens.kr/"},
+                {"@type": "ListItem", "position": 2, "name": sec["name"], "item": url}]}]}
+        cards = "\n".join(
+            f'<div class="post"><div class="d">{p["date"].replace("-", ".")}</div><h3><a href="{p["url"]}">{esc(p["title"].replace("·", ", "))}</a></h3><a class="go" href="{p["url"]}">원문 보기</a></div>'
+            for p in ps)
+        page = f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{sec['title']} | 프레디의 가치망원경</title>
+<meta name="description" content="{esc(sec['desc'])}">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="{sec['title']} | 프레디의 가치망원경">
+<meta property="og:description" content="{esc(sec['desc'])}">
+<meta property="og:url" content="{url}">
+<meta property="og:type" content="website">
+{links}
+<script type="application/ld+json">
+{json.dumps(ld, ensure_ascii=False, indent=1)}
+</script>
+</head>
+<body>
+<header><div class="in"><a href="/">프레디의 가치망원경 Freddie's Value Lens</a><h1>{sec['title']}</h1></div></header>
+<main>
+<p class="note">글 {len(ps)}편 / 최근 글 {upd.replace('-', '.')} / 네이버 블로그 목록을 매일 한 번 옮겨 옵니다</p>
+<p>{sec['intro']}</p>
+{cards}
+<p><a href="/">처음으로</a> / <a href="/stock/">종목 분석 보기</a> / <a href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo={sec['cat']}">블로그에서 이 카테고리 보기</a></p>
+</main>
+<footer>© 2026 프레디의 가치망원경 Freddie's Value Lens<br>이 사이트는 블로그 글의 제목과 링크를 안내하며, 전문은 원문 링크에서 읽을 수 있습니다. 투자 권유가 아닙니다.</footer>
+</body>
+</html>
+"""
+        path = os.path.join(ROOT, slug, "index.html")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+        if old != page:
+            open(path, "w", encoding="utf-8").write(page)
+            print("갱신:", url, len(ps), "편")
+        else:
+            print("변경 없음:", url)
+
+
 def main():
     cmd, args = sys.argv[1], sys.argv[2:]
     if cmd == "list":
@@ -143,6 +229,8 @@ def main():
         sitemap(args)
     elif cmd == "indexnow":
         indexnow(args)
+    elif cmd == "lists":
+        lists()
     elif cmd == "done":
         st = load_state()
         for a in args:

@@ -84,4 +84,16 @@
     <loc>https://valuelens.kr/stock/000270</loc>
     <lastmod>2026-11-23</lastmod>
   </url>
+  <url>
+    <loc>https://valuelens.kr/lecture/</loc>
+    <lastmod>2026-11-23</lastmod>
+  </url>
+  <url>
+    <loc>https://valuelens.kr/fund/</loc>
+    <lastmod>2026-11-23</lastmod>
+  </url>
+  <url>
+    <loc>https://valuelens.kr/etf/</loc>
+    <lastmod>2026-11-23</lastmod>
+  </url>
 </urlset>
