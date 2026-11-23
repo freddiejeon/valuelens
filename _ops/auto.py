@@ -25,7 +25,7 @@ KST = sync.KST
 LIST_CATS = {s["cat"] for s in sync.SECTIONS.values()}
 MODEL = "deepseek/deepseek-v4.1-flash-1017"
 TODAY = dt.datetime.now(KST).strftime("%Y-%m-%d")
-LOG = r"G:\내 드라이브0_투자aluelens_sync\last_run.log"
+LOG = r"G:\내 드라이브\60_투자\valuelens_sync\last_run.log"
 
 
 # ---------- 공통 ----------
