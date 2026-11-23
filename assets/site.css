@@ -2,7 +2,7 @@
 :root{
   --night:#151833;--dusk:#2b2758;--violet:#6a5aa6;--mist:#b9b2dc;
   --lamp:#f2b45c;--lamp-d:#a8661c;--lamp-soft:#fbf1dc;
-  --paper:#f4eee2;--paper-2:#ebe3d2;--card:#fbf8f1;--ink:#1d2042;--text:#2c2e45;--muted:#6f6a5e;--line:#ddd3bf;--rule:#cfc3aa;
+  --paper:#f6f4ef;--paper-2:#e8e6ef;--card:#fbfaf7;--ink:#2a2850;--text:#2f2d45;--muted:#6c6880;--line:#dedbe7;--rule:#cdc9da;
   --serif:"Gowun Batang","Noto Serif KR","Nanum Myeongjo",serif;
   --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
 }
@@ -32,7 +32,7 @@ main>.note:first-child{margin:0;font-size:14px}
 .box{background:var(--lamp-soft);border-left:4px solid var(--lamp);padding:16px 20px;margin:12px 0;color:#3a2f22;font-size:16.5px;line-height:1.85}
 .go{display:inline-block;font-size:14.5px;margin-top:6px;font-weight:600;color:var(--ink);text-decoration:underline;text-decoration-color:var(--lamp);text-decoration-thickness:2px;text-underline-offset:4px}
 p>.go{background:var(--ink);color:#fff;text-decoration:none;padding:10px 18px;border-radius:3px}
-p>.go:hover{background:#2f3366;color:#fff}
+p>.go:hover{background:#3b3b65;color:#fff}
 
 /* 판단 변화와 글 목록: 줄 그은 기록장 */
 .post{display:grid;grid-template-columns:96px 1fr;column-gap:18px;padding:16px 0;margin:0;border-bottom:1px solid var(--line)}
