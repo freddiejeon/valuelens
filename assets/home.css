@@ -17,17 +17,18 @@
 /* 첫머리: 왼쪽 글, 오른쪽에 수채화 한 장 */
 .hero{background:none;color:var(--text);min-height:0;display:block;overflow:visible;padding:0}
 .hero::after{content:none}
-.hero .in{border:0;max-width:1160px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:center}
-.hero h1{font-family:var(--serif);font-weight:700;font-size:56px;line-height:1.15;letter-spacing:-.03em;color:var(--ink);margin:0 0 22px}
+.hero .in{border:0;max-width:1160px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:4fr 8fr;gap:48px;align-items:center}
+.hero h1{font-family:var(--serif);font-weight:700;font-size:64px;line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin:0 0 22px}
 .hero .lead{font-size:18px;line-height:1.75;color:var(--text);margin:0 0 28px;max-width:28em}
 .hero .cta{margin:0 0 30px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px}
 .btn{display:inline-block;background:var(--ink);color:#fff!important;padding:12px 22px;border-radius:3px;font-weight:700;font-size:15px;text-decoration:none}
 .btn:hover{background:#2f3366}
 .btn::before{content:none}
 .txtlink{color:var(--ink)!important;font-weight:600;text-decoration:underline;text-decoration-color:var(--lamp);text-decoration-thickness:2px;text-underline-offset:5px}
-.chips{margin:0;padding-top:18px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0 28px;font-size:13.5px;line-height:1.5;color:var(--muted)}
-.chips b{display:block;font-family:var(--serif);font-size:24px;color:var(--ink);font-weight:700;margin-bottom:2px}
+.count{margin:0;padding-top:18px;border-top:1px solid var(--rule);font-size:15px;line-height:1.7;color:var(--muted);max-width:30em}
+.count b{font-family:var(--serif);font-size:22px;color:var(--ink);margin-right:1px}
 .art{margin:0;position:relative}
+@media (min-width:1240px){.art{margin-right:calc((1160px - 100vw)/2 + 24px)}}
 .art img{display:block;width:100%;border-radius:2px;
   box-shadow:0 1px 2px rgba(60,45,20,.2),0 18px 36px -22px rgba(60,45,20,.5)}
 .art figcaption{font-family:"Nanum Pen Script",cursive;font-size:22px;color:var(--lamp-d);margin:10px 4px 0;transform:rotate(-1deg)}
@@ -39,32 +40,34 @@
 .home h2::before{content:none}
 .sec-head p{margin:0;color:var(--muted);font-size:15px}
 
-/* 목차: 번호 붙은 6개 영역 */
-.index{display:grid;grid-template-columns:repeat(3,1fr);counter-reset:none}
-.entry{position:relative;display:flex;flex-direction:column;padding:26px 26px 24px 0;text-decoration:none;color:var(--text)!important;border-bottom:1px solid var(--rule)}
-.entry+.entry{}
-.index .entry:not(:nth-child(3n+1)){padding-left:26px;border-left:1px solid var(--rule)}
-.entry .no{font-family:var(--serif);font-size:14px;color:var(--lamp-d);letter-spacing:.05em}
-.entry h3{font-family:var(--serif);font-weight:700;font-size:23px;color:var(--ink);margin:6px 0 8px}
-.entry p{margin:0;font-size:15px;line-height:1.7;color:var(--text)}
-.entry .go2{margin-top:auto;padding-top:16px;font-size:14px;font-weight:600;color:var(--ink)}
-.entry .go2::after{content:" →";color:var(--lamp-d)}
-.entry:hover h3{text-decoration:underline;text-decoration-color:var(--lamp);text-decoration-thickness:2px;text-underline-offset:6px}
-.entry .big{font-family:var(--serif);font-weight:700;font-size:48px;line-height:1;color:var(--ink);margin:18px 0 0}
-.entry .big small{font-family:var(--sans);font-size:15px;font-weight:400;color:var(--muted);margin-left:6px}
-.e-video img{margin-top:14px;aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+/* 목차: 주력인 종목분석을 크게, 나머지는 서가처럼 */
+.index{display:grid;grid-template-columns:5fr 7fr;gap:0 48px}
+.entry{display:block;text-decoration:none;color:var(--text)!important}
+.entry h3{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--ink);margin:0 0 6px;letter-spacing:-.01em}
+.entry p{margin:0;font-size:15px;line-height:1.75;color:var(--text)}
+.entry .go2{display:inline-block;margin-top:10px;font-size:14px;font-weight:600;color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-decoration-thickness:2px;text-underline-offset:5px}
+.entry:hover .go2{text-decoration-color:var(--lamp)}
+.e-stock{padding:30px 0 34px}
+.e-stock h3{font-size:30px}
+.e-stock p{font-size:16px;max-width:24em}
+.entry .big{font-family:var(--serif);font-weight:700;font-size:88px;line-height:1;color:var(--ink);margin:28px 0 4px;letter-spacing:-.03em}
+.entry .big small{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--muted);margin-left:8px;letter-spacing:0}
+.shelf .entry{display:grid;grid-template-columns:9em 1fr;column-gap:24px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.shelf .entry:last-child{border-bottom:0}
+.shelf .entry h3{grid-row:1 / span 2;font-size:20px;margin:0}
+.shelf .entry .go2{margin-top:6px;justify-self:start}
+.elsewhere{grid-column:1 / -1;display:grid;grid-template-columns:5fr 7fr;gap:0 48px;border-top:1px solid var(--ink);padding-top:26px;margin-top:4px}
+.e-video{display:grid!important;grid-template-columns:150px 1fr;gap:18px;align-items:start}
+.e-video img{aspect-ratio:16/9;object-fit:cover;border-radius:2px}
+.e-threads{padding-left:0}
 
 /* 최근 종목: 장부처럼 줄 긋기 (ul.stocks 마크업 그대로) */
 .recent{background:var(--paper-2)}
-.home ul.stocks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:48px;counter-reset:s}
-.home ul.stocks li{counter-increment:s;border-bottom:1px solid var(--rule)}
-.home ul.stocks a{display:flex;align-items:baseline;gap:14px;padding:13px 2px;color:var(--ink);text-decoration:none;font-weight:600;font-size:16px;background:none;border:0;border-radius:0}
-.home ul.stocks a::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-weight:400;font-size:13px;color:var(--lamp-d);min-width:1.6em}
-.home ul.stocks a::after{content:"→";margin-left:auto;color:var(--muted);transition:transform .15s}
-.home ul.stocks a:hover{transform:none;color:var(--ink)}
-.home ul.stocks a:hover::after{transform:translateX(3px);color:var(--lamp-d)}
+.home ul.stocks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+.home ul.stocks li{border-bottom:1px solid var(--rule)}
+.home ul.stocks a{display:block;padding:13px 2px;color:var(--ink);text-decoration:none;font-weight:600;font-size:16px;background:none;border:0;border-radius:0}
+.home ul.stocks a:hover{transform:none;color:var(--ink);text-decoration:underline;text-decoration-color:var(--lamp);text-decoration-thickness:2px;text-underline-offset:5px}
 .more{display:inline-block;margin-top:22px;color:var(--ink)!important;font-weight:600;text-decoration:underline;text-decoration-color:var(--lamp);text-decoration-thickness:2px;text-underline-offset:5px}
-.more::after{content:" →"}
 
 /* 소개: 엽서 한 장과 편지 */
 .about .sec{display:grid;grid-template-columns:5fr 7fr;gap:56px;align-items:start}
@@ -81,25 +84,26 @@
 .home footer{margin-top:0}
 
 @media (max-width:900px){
-  .hero .in,.sec-head,.about .sec{grid-template-columns:1fr;gap:24px}
+  .hero .in,.sec-head,.about .sec,.index,.elsewhere{grid-template-columns:1fr;gap:24px}
   .hero .in{padding-top:36px}
-  .index{grid-template-columns:1fr 1fr}
-  .index .entry:not(:nth-child(3n+1)){padding-left:0;border-left:0}
-  .index .entry:nth-child(2n){padding-left:22px;border-left:1px solid var(--rule)}
+  .e-stock{padding-bottom:10px}
+  .shelf{border-top:1px solid var(--rule)}
 }
 @media (max-width:600px){
   .nav .in{flex-wrap:wrap;gap:8px;padding:14px 18px 10px}
   .nav ul{width:100%;margin:0;gap:18px}
   .hero .in{padding:28px 18px 28px;gap:20px}
-  .hero h1{font-size:40px}
+  .hero h1{font-size:42px}
   .hero .lead{font-size:16.5px}
   .art{order:-1;margin:0 -18px}
   .art img{border-radius:0}
   .art figcaption{margin:8px 18px 0}
   .sec{padding:40px 18px}
   .home h2{font-size:25px}
-  .index{grid-template-columns:1fr}
-  .index .entry,.index .entry:nth-child(2n){padding:22px 0;border-left:0}
+  .entry .big{font-size:68px}
+  .shelf .entry{grid-template-columns:1fr}
+  .shelf .entry h3{grid-row:auto;margin-bottom:4px}
+  .e-video{grid-template-columns:110px 1fr}
   .home ul.stocks{grid-template-columns:1fr}
   .about .card{max-width:300px}
 }
