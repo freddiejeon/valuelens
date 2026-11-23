@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/home.css">
 <link rel="preload" as="image" href="/assets/img/hero-1280.webp" imagesrcset="/assets/img/hero-m.webp 800w, /assets/img/hero-1280.webp 1280w, /assets/img/hero-1920.webp 1920w" imagesizes="100vw">
 <script type="application/ld+json">
 {
@@ -49,36 +50,90 @@
 </script>
 </head>
 <body class="home">
+<nav class="nav" aria-label="주요 메뉴"><div class="in">
+  <a class="logo" href="/">프레디의 가치망원경</a>
+  <ul>
+    <li><a href="/stock/">종목분석</a></li>
+    <li><a href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=18">주식강의</a></li>
+    <li><a href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=19">모의투자</a></li>
+    <li><a href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=13">ETF</a></li>
+    <li><a href="https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ">영상</a></li>
+    <li><a href="https://www.threads.com/@freddie.valuelens">스레드</a></li>
+    <li><a class="blog" href="https://blog.naver.com/journk">블로그</a></li>
+  </ul>
+</div></nav>
 <header class="hero">
   <picture>
-    <source media="(max-width:720px)" srcset="/assets/img/hero-m.webp">
-    <img src="/assets/img/hero-1280.webp" srcset="/assets/img/hero-1280.webp 1280w, /assets/img/hero-1920.webp 1920w" sizes="100vw" width="1920" height="977" alt="밤하늘 언덕에서 망원경으로 별과 등대를 바라보는 소년과 설명하는 안내자, 곁에 등잔불이 켜진 수채화">
+    <source media="(max-width:600px)" srcset="/assets/img/hero-m.webp">
+    <img src="/assets/img/hero-1280.webp" srcset="/assets/img/hero-1280.webp 1280w, /assets/img/hero-1920.webp 1920w" sizes="100vw" width="1920" height="977" fetchpriority="high" alt="밤하늘 언덕에서 망원경으로 별과 등대를 바라보는 소년과 설명하는 안내자, 곁에 등잔불이 켜진 수채화">
   </picture>
+  <div class="sky" aria-hidden="true"></div>
   <div class="in"><div class="txt">
-    <p class="eyebrow">Value Investing Notes</p>
+    <p class="eyebrow">VALUE INVESTING NOTES</p>
     <h1>프레디의 가치망원경</h1>
     <p class="en">Freddie's Value Lens</p>
     <p class="lead">공시와 숫자로 기업의 가치를 멀리, 또렷하게 봅니다. 종목분석과 ETF, 주린이 강의를 한곳에서 안내합니다.</p>
     <a class="btn btn-lamp" href="/stock/">종목 분석 보기</a>
     <a class="btn btn-ghost" href="https://blog.naver.com/journk">블로그 원문</a>
+    <div class="chips"><span><b>19</b>개 종목 분석</span><span><b>1억원</b> 모의펀드 운용보고</span><span><b>블로그</b> 유튜브 스레드</span></div>
   </div></div>
 </header>
 <main>
-  <section>
-    <h2>이 사이트는 무엇인가요?</h2>
-    <p>네이버 블로그 「프레디의 가치망원경」에 쓴 종목분석, ETF, 주린이 주식강의, 모의펀드 운용보고를 주제별로 정리해 안내하는 사이트입니다. 각 글의 핵심 요약을 보고 전문은 블로그 원문에서 읽으실 수 있습니다.</p>
-  </section>
-  <section>
-    <h2>어떤 글을 다루나요?</h2>
-    <ul class="topics">
-      <li><b>종목분석</b><span>공시와 실적을 근거로 한 상장사 가치 판단</span></li>
-      <li><b>ETF</b><span>ETF 투자 이야기</span></li>
-      <li><b>주린이 강의</b><span>주린이를 위한 주식투자 강의</span></li>
-      <li><b>모의펀드</b><span>1억원 모의투자 「프레디 가치망원경 1호」 운용보고</span></li>
-    </ul>
-  </section>
-  <section>
-    <h2>최근 분석한 종목은?</h2>
+<section class="sec" id="topics">
+  <div class="sec-head">
+    <div><span class="kicker">WHAT I WRITE</span><h2>어떤 글을 다루나요?</h2></div>
+    <p>네이버 블로그 「프레디의 가치망원경」의 글을 주제별로 정리했습니다. 각 글은 요약을 보고 전문은 블로그 원문에서 읽을 수 있습니다.</p>
+  </div>
+  <div class="bento">
+    <a class="tile t-stock" href="/stock/">
+      <div class="ico"><svg fill="none" stroke="#f2b45c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 14l11-6 2 4-11 6z"/><path d="M14 8l4-2 2 4-4 2"/><path d="M8 17l-3 5M10 16l3 6"/></svg></div>
+      <h3>종목분석</h3>
+      <p>공시와 실적을 근거로 상장사의 적정주가를 계산하고, 판단이 어떻게 바뀌었는지 기록합니다.</p>
+      <p class="big">19<small>개 종목</small></p>
+      <div class="mini"><span>적정주가 계산</span><span>DART 공시 근거</span><span>판단 변화 기록</span></div>
+      <span class="go2">종목 분석 전체 보기</span>
+    </a>
+    <a class="tile t-lecture" href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=18">
+      <div class="ico"><svg fill="none" stroke="#f2b45c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 012 2v12a2 2 0 00-2-2H4z"/><path d="M20 5h-6a2 2 0 00-2 2v12a2 2 0 012-2h6z"/></svg></div>
+      <h3>주식투자 강의</h3>
+      <p>주린이를 위한 주식투자 강의. 처음 시작하는 분이 차례대로 따라올 수 있게 정리합니다.</p>
+      <div class="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="go2">강의 보기</span>
+    </a>
+    <a class="tile t-fund" href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=19">
+      <div class="ico"><svg fill="none" stroke="#f2b45c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M9.5 9.5h3.5a1.8 1.8 0 010 3.5h-2a1.8 1.8 0 000 3.5H14"/></svg></div>
+      <h3>모의투자</h3>
+      <p>1억원 모의펀드 「프레디 가치망원경 1호」 운용보고.</p>
+      <span class="go2">운용보고 보기</span>
+    </a>
+    <a class="tile t-etf" href="https://blog.naver.com/PostList.naver?blogId=journk&amp;categoryNo=13">
+      <div class="ico"><svg fill="none" stroke="#f2b45c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 9h16l-2 10H6z"/><path d="M8 9l4-5 4 5"/><path d="M9 13v3M12 13v3M15 13v3"/></svg></div>
+      <h3>ETF 투자</h3>
+      <p>여러 종목을 한 바구니에 담는 ETF 투자 이야기.</p>
+      <span class="go2">ETF 글 보기</span>
+    </a>
+    <a class="tile t-video" href="https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ">
+      <div class="thumb"><img src="/assets/img/video.webp" width="720" height="405" loading="lazy" alt="망원경으로 밤하늘을 보는 소년, 유튜브 채널 대표 그림"><span class="play" aria-hidden="true"></span></div>
+      <div class="body">
+        <h3>동영상</h3>
+        <p>블로그의 분석과 강의를 영상으로 풀어 설명하는 유튜브 채널.</p>
+        <span class="go2">유튜브에서 보기</span>
+      </div>
+    </a>
+    <a class="tile t-threads" href="https://www.threads.com/@freddie.valuelens">
+      <div class="ico"><svg fill="none" stroke="#f2b45c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 005 0V12a9 9 0 10-3.5 7.1"/></svg></div>
+      <h3>스레드</h3>
+      <p>@freddie.valuelens에서 나누는 짧은 투자 메모.</p>
+      <div class="bubbles" aria-hidden="true"><span>오늘 공시에서 눈에 띈 숫자는?</span><span>새 분석 글이 올라왔어요</span></div>
+      <span class="go2">스레드 팔로우</span>
+    </a>
+  </div>
+</section>
+<section class="recent"><div class="sec">
+  <div class="sec-head">
+    <div><span class="kicker">LATEST</span><h2>최근 분석한 종목은?</h2></div>
+    <p>종목을 누르면 프레디의 최신 판단과 지금까지의 분석 요약을 볼 수 있습니다.</p>
+  </div>
     <ul class="stocks">
       <li><a href="/stock/000270">기아(000270)</a></li>
       <li><a href="/stock/000660">SK하이닉스(000660)</a></li>
@@ -91,21 +146,36 @@
       <li><a href="/stock/052790">액토즈소프트(052790)</a></li>
       <li><a href="/stock/028100">동아지질(028100)</a></li>
     </ul>
-    <p><a class="more" href="/stock/">종목 분석 전체 목록 보기 →</a></p>
-  </section>
-  <section class="author">
-    <img src="/assets/img/freddie.webp" width="480" height="480" loading="lazy" alt="망원경으로 가치투자 별자리를 바라보는 프레디의 가치망원경 대표 그림">
-    <div>
-    <h2>글쓴이는 누구인가요?</h2>
+    <a class="more" href="/stock/">종목 분석 전체 목록 보기 →</a>
+</div></section>
+<section class="about"><div class="sec">
+  <div class="stack" aria-hidden="true">
+    <img class="a" src="/assets/img/video.webp" width="720" height="405" loading="lazy" alt="">
+    <img class="b" src="/assets/img/hero-m.webp" width="800" height="588" loading="lazy" alt="">
+    <img class="c" src="/assets/img/freddie.webp" width="480" height="480" loading="lazy" alt="">
+  </div>
+  <div class="what">
+    <span class="kicker">ABOUT</span>
+    <h2>이 사이트는 무엇인가요?</h2>
+    <p>네이버 블로그 「프레디의 가치망원경」에 쓴 종목분석, ETF, 주린이 주식강의, 모의펀드 운용보고를 주제별로 정리해 안내하는 사이트입니다. 각 글의 핵심 요약을 보고 전문은 블로그 원문에서 읽으실 수 있습니다.</p>
+    <h2 style="font-size:24px;margin-top:28px">글쓴이는 누구인가요?</h2>
     <p>신용정보회사와 은행에서 일한 뒤 20여 년간 여러 회사를 창업해 CEO로 경영하고 스타트업 CFO로 활동한 가치투자자입니다.</p>
     <ul class="links">
-      <li><a href="https://blog.naver.com/journk">네이버 블로그</a></li>
-      <li><a href="https://www.threads.com/@freddie.valuelens">스레드 @freddie.valuelens</a></li>
-      <li><a href="https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ">유튜브 채널</a></li>
+      <li><a class="nv" href="https://blog.naver.com/journk">네이버 블로그</a></li>
+      <li><a class="yt" href="https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ">유튜브 채널</a></li>
+      <li><a class="th" href="https://www.threads.com/@freddie.valuelens">스레드 @freddie.valuelens</a></li>
     </ul>
-    </div>
-  </section>
+  </div>
+</div></section>
 </main>
 <footer>© 2026 프레디의 가치망원경 Freddie's Value Lens<br>이 사이트의 요약은 블로그 원문의 일부이며, 전문은 원문 링크에서 읽을 수 있습니다. 투자 권유가 아닙니다.</footer>
+<script>
+document.querySelectorAll('.tile').forEach(function(t){
+  if(matchMedia('(hover:none),(prefers-reduced-motion:reduce)').matches)return;
+  t.addEventListener('pointermove',function(e){var r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    t.style.transform='rotateX('+((.5-y)*8)+'deg) rotateY('+((x-.5)*10)+'deg) translateZ(0)';t.style.setProperty('--mx',x*100+'%');t.style.setProperty('--my',y*100+'%');});
+  t.addEventListener('pointerleave',function(){t.style.transform='';});
+});
+</script>
 </body>
 </html>
