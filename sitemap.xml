@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://valuelens.kr/lecture/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://valuelens.kr/fund/</loc>
@@ -106,6 +106,10 @@
   </url>
   <url>
     <loc>https://valuelens.kr/stock/090430</loc>
+    <lastmod>2026-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://valuelens.kr/tf/</loc>
     <lastmod>2026-11-24</lastmod>
   </url>
 </urlset>
