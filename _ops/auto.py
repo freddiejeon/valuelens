@@ -36,6 +36,19 @@ def git(*a, check=True):
     return r.stdout.strip()
 
 
+def push(*a, tries=3, wait=30):
+    """GitHub 일시 오류(500 등)에 대비해 push를 간격을 두고 다시 시도함."""
+    import time
+    for i in range(tries):
+        try:
+            return git("push", *a)
+        except RuntimeError as e:
+            if i == tries - 1:
+                raise
+            print(f"push 실패 {i + 1}회, {wait * (i + 1)}초 뒤 다시 시도: {str(e).splitlines()[0]}")
+            time.sleep(wait * (i + 1))
+
+
 def gh(*a):
     r = subprocess.run(["gh", *a], cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
     if r.returncode:
@@ -264,7 +277,7 @@ def stock_pr(p, codes, card_only, log, dry):
     sync.sitemap([f"https://valuelens.kr/stock/{c}" for c in codes] + ["https://valuelens.kr/stock/", "https://valuelens.kr/"])
     git("add", *files, "sitemap.xml")
     git("commit", "-m", f"자동: {', '.join(codes)} 페이지에 새 글 반영 ({p['logNo']})\n\n문장은 DeepSeek 작성, 숫자는 원문 대조 통과.")
-    git("push", "-f", "-u", "origin", br)
+    push("-f", "-u", "origin", br)
     pr_body = (f"블로그 새 글을 종목 페이지에 반영합니다.\n\n- 원문: {p['url']}\n- 종목: {', '.join(codes)}\n"
                f"- 문장 작성: DeepSeek ({MODEL}), 코드 검사: 숫자 원문 대조, 45자 이상 원문 복제 없음\n\n"
                f"감수할 점\n- 최신 판단 상자와 글 카드 문장이 원문 판단과 맞는지\n- 의견이 바뀌었다면 예전 글 카드에 「당시 판단」 문구가 필요한지\n\n"
@@ -313,6 +326,16 @@ def run(a):
         if git("status", "--porcelain"):
             raise SystemExit("작업 폴더에 커밋 안 된 변경이 있어 멈춤: " + git("status", "--porcelain"))
         git("fetch", "origin")
+        # 지난 실행에서 push하지 못한 커밋이 남아 있으면 먼저 올려 봄
+        if git("rev-parse", "--verify", "-q", "main", check=False) and git("rev-list", "origin/main..main", check=False):
+            try:
+                git("rebase", "origin/main")
+                push("origin", "main")
+                log.append("- 지난 실행에서 밀린 커밋을 push함")
+                git("fetch", "origin")
+            except RuntimeError as e:
+                git("rebase", "--abort", check=False)
+                log.append(f"- 밀린 커밋 push 실패, 이번 실행에서 다시 만듦: {str(e).splitlines()[0]}")
         git("checkout", "-B", "main", "origin/main")
 
     st = sync.load_state()
@@ -359,7 +382,7 @@ def run(a):
     if git("status", "--porcelain"):
         git("add", "-A")
         git("commit", "-m", "자동: 목록 페이지와 처리 상태 갱신")
-        git("push", "origin", "main")
+        push("origin", "main")
         log.append(f"- main 반영: {', '.join(urls) or '상태 파일만'}")
         if urls:
             sync.indexnow(urls)
