@@ -5,7 +5,7 @@
   코드      목록 페이지(/lecture/ /fund/ /etf/ /brief/), 사이트맵, IndexNow, 처리 표시 → main에 바로 반영
   DeepSeek  사이트에 페이지가 있는 종목의 새 분석 글 → 최신 판단 상자와 글 카드 문장 작성
   코드      DeepSeek 문장의 숫자가 블로그 원문에 실제로 있는지, 원문을 길게 베끼지 않았는지 검사
-            → 통과하면 PR로 올림 (Claude 감수, 프레디 병합)
+            → 통과하면 PR로 올리고 바로 자동 병합 (검사 실패 글만 보류)
   보고만    페이지가 없는 종목(새 페이지는 Claude 작업), 처리 규칙이 없는 카테고리
 
 사용법
@@ -283,8 +283,14 @@ def stock_pr(p, codes, card_only, log, dry):
                f"감수할 점\n- 최신 판단 상자와 글 카드 문장이 원문 판단과 맞는지\n- 의견이 바뀌었다면 예전 글 카드에 「당시 판단」 문구가 필요한지\n\n"
                f"DeepSeek 출력\n```json\n{json.dumps(out, ensure_ascii=False, indent=1)}\n```\n\n🤖 valuelens 자동 갱신 (_ops/auto.py)")
     url = gh("pr", "create", "--base", "main", "--head", br, "--title", f"자동: {p['title'][:60]}", "--body", pr_body)
-    log.append(f"- 감수 대기 PR: {url} ({', '.join(codes)})")
-    git("checkout", "main")
+    # 프레디 요청(2026.11.25): 검사를 통과한 자동 PR은 감수 없이 바로 병합
+    try:
+        gh("pr", "merge", url, "--squash", "--delete-branch")
+        log.append(f"- 반영됨: {', '.join(codes)} ← {p['title']} ({url})")
+    except RuntimeError as e:
+        log.append(f"- 자동 병합 실패, PR로 남김: {url} ({str(e).splitlines()[0]})")
+    git("fetch", "origin")
+    git("checkout", "-B", "main", "origin/main")
     return True
 
 
