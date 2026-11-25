@@ -2,7 +2,7 @@
 :root{
   --night:#151833;--dusk:#2b2758;--violet:#6a5aa6;--mist:#b9b2dc;
   --lamp:#f2b45c;--lamp-d:#a8661c;--lamp-soft:#fbf1dc;
-  --paper:#f6f4ef;--paper-2:#e8e6ef;--card:#fbfaf7;--ink:#2a2850;--text:#2f2d45;--muted:#6c6880;--line:#dedbe7;--rule:#cdc9da;
+  --paper:#f6f4ef;--paper-2:#e8e6ef;--card:#fbfaf7;--ink:#2a2850;--text:#2f2d45;--muted:#6c6880;--muted-d:#64607a;--lamp-dd:#9a5c15;--line:#dedbe7;--rule:#cdc9da;
   --serif:"Gowun Batang","Noto Serif KR","Nanum Myeongjo",serif;
   --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
 }
@@ -12,6 +12,10 @@ body{margin:0;font-family:var(--sans);color:var(--text);line-height:1.8;backgrou
 a{color:var(--ink);text-decoration-color:var(--rule);text-underline-offset:4px}
 a:hover{color:var(--ink);text-decoration-color:var(--lamp)}
 img{max-width:100%;height:auto;display:block}
+
+/* 키보드 포커스: 등잔불 호박색 테두리 (어두운 바탕에서는 밝은 등잔불색) */
+:focus-visible{outline:2px solid var(--lamp-d);outline-offset:3px;border-radius:2px}
+footer :focus-visible,.btn:focus-visible,p>.go:focus-visible{outline-color:var(--lamp)}
 
 /* 머리 (종목 페이지와 목록 페이지): 신문 제호처럼 굵은 줄 두 개 */
 header{color:var(--ink);padding:18px 20px 0;background:none}
@@ -37,7 +41,7 @@ p>.go:hover{background:#3b3b65;color:#fff}
 /* 판단 변화와 글 목록: 줄 그은 기록장 */
 .post{display:grid;grid-template-columns:96px 1fr;column-gap:18px;padding:16px 0;margin:0;border-bottom:1px solid var(--line)}
 .post>*{grid-column:2}
-.post .d{grid-column:1;grid-row:1 / span 3;font-family:var(--serif);color:var(--lamp-d);font-size:14px;padding-top:2px}
+.post .d{grid-column:1;grid-row:1 / span 3;font-family:var(--serif);color:var(--lamp-dd);font-size:14px;padding-top:2px}
 .post h3{font-size:16.5px;margin:0 0 4px}
 .post h3 a{color:var(--ink);text-decoration:none}
 .post h3 a:hover{text-decoration:underline;text-decoration-color:var(--lamp)}
