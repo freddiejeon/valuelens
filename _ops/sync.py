@@ -140,6 +140,30 @@ SECTIONS = {
 }
 
 
+# 방문 통계: 구글 애널리틱스(GA4). 모든 공개 HTML의 <head> 바로 다음에 넣음
+GA_ID = "G-N4J28VDQ0Z"
+GA_TAG = f"""<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>"""
+
+
+def ensure_ga():
+    """GA 태그가 없는 공개 HTML에 태그를 넣음. 바꾼 파일 목록을 돌려줌 (새 페이지가 태그 없이 만들어져도 자동으로 보완)."""
+    changed = []
+    for d, dirs, files in os.walk(ROOT):
+        dirs[:] = [x for x in dirs if not x.startswith((".", "_"))]
+        for f in files:
+            if not f.endswith(".html"):
+                continue
+            path = os.path.join(d, f)
+            s = open(path, encoding="utf-8").read()
+            if "googletagmanager.com/gtag/js" in s or "<head>" not in s:
+                continue
+            s = s.replace("<head>\n", "<head>\n" + GA_TAG + "\n", 1) if "<head>\n" in s else s.replace("<head>", "<head>\n" + GA_TAG, 1)
+            open(path, "w", encoding="utf-8", newline="\n").write(s)
+            changed.append(os.path.relpath(path, ROOT).replace(os.sep, "/"))
+    return changed
+
+
 def esc(t):
     return html.escape(t, quote=True)
 
@@ -176,6 +200,7 @@ def lists(posts=None):
         page = f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
+{GA_TAG}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{sec['title']} | 프레디의 가치망원경</title>
@@ -234,6 +259,9 @@ def main():
         indexnow(args)
     elif cmd == "lists":
         lists()
+    elif cmd == "ga":
+        for f in ensure_ga():
+            print("GA 태그 추가:", f)
     elif cmd == "done":
         st = load_state()
         for a in args:
