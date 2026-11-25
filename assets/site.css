@@ -55,6 +55,9 @@ ul.list li{border-bottom:1px solid var(--line);padding:13px 2px;display:flex;fle
 ul.list li a{display:inline-block;padding:8px 0;margin:-8px 0;font-weight:600;color:var(--ink);text-decoration:none;font-size:16.5px}
 ul.list li a:hover{text-decoration:underline;text-decoration-color:var(--lamp)}
 
+/* 페이지 끝 이동 링크 (종목, 강의, 모의투자, ETF, 브리핑 페이지 공통) */
+main>p:last-child a{display:inline-block;min-height:44px;padding:8px 0}
+
 footer{background:var(--ink);color:#cfcbe0;text-align:center;font-size:13px;line-height:1.8;padding:32px 20px 40px;margin-top:24px}
 footer a{color:var(--lamp)}
 
