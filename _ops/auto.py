@@ -375,6 +375,9 @@ def run(a):
 
     # main 반영: 목록 페이지, 상태 파일
     sync.lists()
+    ga = sync.ensure_ga()
+    if ga:
+        log.append(f"- GA 태그 보완: {', '.join(ga)}")
     changed = [l[3:] for l in git("status", "--porcelain").splitlines()]
     urls = [f"https://valuelens.kr/{f.split('/')[0]}/" for f in changed if f.endswith("/index.html")]
     st = sync.load_state()
