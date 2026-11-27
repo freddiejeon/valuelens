@@ -249,7 +249,7 @@ def plan(posts):
                     jobs.append(("pending", p, f"새 종목 페이지 필요({code}): Claude 작업"))
             else:
                 hit = [c for n, c in names.items() if n in p["title"]]
-                jobs.append(("cards", p, hit) if hit else ("done", p, "여러 종목 글, 사이트에 페이지 있는 종목 없음"))
+                jobs.append(("cards", p, hit) if hit else ("pending", p, "제목에 종목코드 없음, 페이지 있는 종목 없음: Claude 확인(새 종목 페이지 또는 해당 없음)"))
         else:
             jobs.append(("pending", p, f"카테고리 {cat}({p['categoryName']}) 처리 규칙 없음"))
     return jobs
