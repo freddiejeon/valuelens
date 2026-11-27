@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://valuelens.kr/</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-27</lastmod>
   </url>
   <url>
     <loc>https://valuelens.kr/stock/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
   </url>
   <url>
     <loc>https://valuelens.kr/stock/005935</loc>
@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://valuelens.kr/brief/</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-27</lastmod>
   </url>
   <url>
     <loc>https://valuelens.kr/stock/090430</loc>
@@ -119,5 +119,9 @@
   <url>
     <loc>https://valuelens.kr/stock/101930</loc>
     <lastmod>2026-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://valuelens.kr/stock/453340</loc>
+    <lastmod>2026-11-27</lastmod>
   </url>
 </urlset>
