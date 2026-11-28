@@ -50,12 +50,27 @@ def push(*a, tries=3, wait=30):
             time.sleep(wait * (i + 1))
 
 
+def gh_env():
+    """gh 로그인을 Claude 앱 안에서 하면 설정(hosts.yml)이 앱 전용 폴더에 저장돼 예약 작업의 gh가 못 찾음.
+    기본 위치에 없으면 그 폴더를 GH_CONFIG_DIR로 알려 줌 (토큰 자체는 Windows 자격 증명 관리자에 있음)."""
+    env = dict(os.environ)
+    if env.get("GH_CONFIG_DIR") or os.name != "nt":
+        return env
+    if os.path.exists(os.path.join(env.get("APPDATA", ""), "GitHub CLI", "hosts.yml")):
+        return env
+    import glob
+    hit = glob.glob(os.path.join(env.get("LOCALAPPDATA", ""), "Packages", "Claude_*", "LocalCache", "Roaming", "GitHub CLI", "hosts.yml"))
+    if hit:
+        env["GH_CONFIG_DIR"] = os.path.dirname(hit[0])
+    return env
+
+
 def gh(*a):
-    r = subprocess.run(["gh", *a], cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+    r = subprocess.run(["gh", *a], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", env=gh_env())
     if r.returncode:
         hint = ""
         if "auth login" in r.stderr:  # 예약 작업 환경에서 gh 로그인 정보를 못 찾는 경우 원인 추적용
-            cfg = os.environ.get("GH_CONFIG_DIR") or os.path.join(os.environ.get("APPDATA", "(APPDATA 없음)"), "GitHub CLI")
+            cfg = gh_env().get("GH_CONFIG_DIR") or os.path.join(os.environ.get("APPDATA", "(APPDATA 없음)"), "GitHub CLI")
             hint = (f" [진단: 사용자 {os.environ.get('USERNAME')}, 설정 폴더 {cfg}, "
                     f"hosts.yml {'있음' if os.path.exists(os.path.join(cfg, 'hosts.yml')) else '없음'}]")
         raise RuntimeError(f"gh {' '.join(a)} 실패: {r.stderr.strip()}{hint}")
