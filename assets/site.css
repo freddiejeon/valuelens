@@ -67,3 +67,9 @@ footer a{color:var(--lamp)}
   .post .d{grid-column:1;grid-row:auto}
   .post>*{grid-column:1}
 }
+.box .answer{font-weight:700;margin:0 0 8px}
+.facts{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:15px}
+.facts th,.facts td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+.facts th{color:var(--muted);font-weight:400;font-size:14px}
+.facts td.n{white-space:nowrap;font-weight:700}
+.facts td.src{color:var(--muted);font-size:14px}
