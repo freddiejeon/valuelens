@@ -1,0 +1,51 @@
+# 프레디의 가치망원경 Freddie's Value Lens
+
+> 가치투자자 프레디가 DART 공시와 KRX 종가를 직접 확인해 쓴 한국 상장사 분석 글을 종목별, 주제별로 정리한 안내 사이트입니다. 각 페이지는 글마다 1~2문장 요약과 최신 판단을 담고, 전문은 네이버 블로그 원문(https://blog.naver.com/journk)으로 연결합니다.
+
+- 글쓴이: 프레디. 신용정보회사와 은행 근무 후 20여 년간 여러 회사를 창업해 CEO로 경영하고 스타트업 CFO로 활동한 가치투자자
+- 수치 표기: 괄호 안에 출처와 기준일(DART 공시일, KRX 종가)을 적고, 프레디의 추정은 「필자 계산」으로 구분합니다
+- 의견이 바뀐 예전 글은 당시 판단이며, 종목 페이지의 「프레디의 최신 판단」이 현재 의견입니다
+- 모든 내용은 투자 권유가 아닙니다
+
+## 주요 페이지
+
+- [첫 화면](https://valuelens.kr/): 사이트 소개, 최근 분석한 종목, 글쓴이 소개
+- [종목 분석 목록](https://valuelens.kr/stock/): 분석한 상장사 전체, 최근 분석 순
+- [주린이 주식투자 강의 목록](https://valuelens.kr/lecture/): 초보 투자자를 위한 강의와 특강
+- [모의펀드 「프레디 가치망원경 1호」 운용보고](https://valuelens.kr/fund/): 1억원 모의펀드의 주간 운용보고와 매매보고서
+- [ETF 투자 글 목록](https://valuelens.kr/etf/): ETF 분석과 투자 이야기
+- [증권사 리포트 브리핑](https://valuelens.kr/brief/): 그날 나온 증권사 리포트 요약
+
+## 종목 분석
+
+- [DMS(068790) 분석 모음](https://valuelens.kr/stock/068790): 최신 판단과 지금까지의 분석 글 목록
+- [F&F(383220) 분석 모음](https://valuelens.kr/stock/383220): 최신 판단과 지금까지의 분석 글 목록
+- [LX세미콘(108320) 분석 모음](https://valuelens.kr/stock/108320): 최신 판단과 지금까지의 분석 글 목록
+- [SK하이닉스(000660) 분석 모음](https://valuelens.kr/stock/000660): 최신 판단과 지금까지의 분석 글 목록
+- [기아(000270) 분석 모음](https://valuelens.kr/stock/000270): 최신 판단과 지금까지의 분석 글 목록
+- [다우데이타(032190) 분석 모음](https://valuelens.kr/stock/032190): 최신 판단과 지금까지의 분석 글 목록
+- [달바글로벌(483650) 분석 모음](https://valuelens.kr/stock/483650): 최신 판단과 지금까지의 분석 글 목록
+- [동아지질(028100) 분석 모음](https://valuelens.kr/stock/028100): 최신 판단과 지금까지의 분석 글 목록
+- [동원산업(006040) 분석 모음](https://valuelens.kr/stock/006040): 최신 판단과 지금까지의 분석 글 목록
+- [디바이스(187870) 분석 모음](https://valuelens.kr/stock/187870): 최신 판단과 지금까지의 분석 글 목록
+- [삼성전자우(005935) 분석 모음](https://valuelens.kr/stock/005935): 최신 판단과 지금까지의 분석 글 목록
+- [삼지전자(037460) 분석 모음](https://valuelens.kr/stock/037460): 최신 판단과 지금까지의 분석 글 목록
+- [아모레퍼시픽(090430) 분석 모음](https://valuelens.kr/stock/090430): 최신 판단과 지금까지의 분석 글 목록
+- [액토즈소프트(052790) 분석 모음](https://valuelens.kr/stock/052790): 최신 판단과 지금까지의 분석 글 목록
+- [에이피알(278470) 분석 모음](https://valuelens.kr/stock/278470): 최신 판단과 지금까지의 분석 글 목록
+- [엔켐(348370) 분석 모음](https://valuelens.kr/stock/348370): 최신 판단과 지금까지의 분석 글 목록
+- [우원개발(046940) 분석 모음](https://valuelens.kr/stock/046940): 최신 판단과 지금까지의 분석 글 목록
+- [인화정공(101930) 분석 모음](https://valuelens.kr/stock/101930): 최신 판단과 지금까지의 분석 글 목록
+- [티앤엘(340570) 분석 모음](https://valuelens.kr/stock/340570): 최신 판단과 지금까지의 분석 글 목록
+- [티이엠씨(425040) 분석 모음](https://valuelens.kr/stock/425040): 최신 판단과 지금까지의 분석 글 목록
+- [파마리서치(214450) 분석 모음](https://valuelens.kr/stock/214450): 최신 판단과 지금까지의 분석 글 목록
+- [헥토이노베이션(214180) 분석 모음](https://valuelens.kr/stock/214180): 최신 판단과 지금까지의 분석 글 목록
+- [현대그린푸드(453340) 분석 모음](https://valuelens.kr/stock/453340): 최신 판단과 지금까지의 분석 글 목록
+- [현대엘리베이터(017800) 분석 모음](https://valuelens.kr/stock/017800): 최신 판단과 지금까지의 분석 글 목록
+- [휴메딕스(200670) 분석 모음](https://valuelens.kr/stock/200670): 최신 판단과 지금까지의 분석 글 목록
+
+## 글쓴이 채널
+
+- [네이버 블로그 프레디의 가치망원경](https://blog.naver.com/journk): 모든 분석 글의 원문
+- [스레드 @freddie.valuelens](https://www.threads.net/@freddie.valuelens)
+- [유튜브](https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ)

@@ -409,10 +409,13 @@ def run(a):
 
     # main 반영: 목록 페이지, 상태 파일
     sync.lists()
+    if sync.llms():
+        log.append("- llms.txt 갱신")
     ga = sync.ensure_ga()
     if ga:
         log.append(f"- GA 태그 보완: {', '.join(ga)}")
-    changed = [l[3:] for l in git("status", "--porcelain").splitlines()]
+    # git()이 출력 앞뒤 공백을 지워 첫 줄의 " M"이 "M"이 되므로 l[3:]로 자르면 앞글자가 잘림(/tf/, /rief/ 사고). 상태 칸을 공백 기준으로 떼어냄
+    changed = [l.split(maxsplit=1)[1] for l in git("status", "--porcelain").splitlines()]
     urls = [f"https://valuelens.kr/{f.split('/')[0]}/" for f in changed if f.endswith("/index.html")]
     st = sync.load_state()
     for n in done:
@@ -429,6 +432,8 @@ def run(a):
         log.append(f"- main 반영: {', '.join(urls) or '상태 파일만'}")
         if urls:
             sync.indexnow(urls)
+    for prob in sync.lint():
+        log.append(f"- 점검 경고: {prob}")
     print("\n".join(log))
 
 

@@ -42,10 +42,13 @@
 - head의 스타일 부분은 고정 틀을 쓰지 말고 main에 있는 기존 종목 페이지 head에서 그대로 복사함. 디자인 개편(PR #2) 병합 후에는 인라인 style 블록 대신 링크 묶음(og:image, theme-color, 고운바탕(Gowun Batang) 폰트, /assets/site.css)을 씀
 - head 맨 앞(`<head>` 바로 다음)의 구글 애널리틱스 태그 두 줄도 기존 페이지에서 그대로 복사함. 빠뜨려도 `python3 _ops/sync.py ga`(auto.py 실행 때 자동)가 보완함
 - 「OO은 어떤 회사인가요?」는 블로그 원문(그 종목의 글들)에 근거가 있는 내용만 씀. 원문에 없는 일반 정보는 쓰지 않음 (검토 없이 반영하므로)
+- head를 복사할 때 다른 종목의 title, description, canonical, og, JSON-LD까지 딸려 오지 않게 함. 디자인 링크 묶음은 `python3 -c "import sys; sys.path.insert(0,'_ops'); import sync; print(sync.head_links())"` 출력만 붙임 (2026.11.28 현대엘리베이터 등 4곳에 SK하이닉스 head가 통째로 들어가 canonical이 000660을 가리킨 사고가 있었음)
+- 반영 전 `python3 _ops/sync.py lint`가 「점검 통과」인지 확인 (head 중복, canonical 불일치, 사이트맵의 없는 주소를 잡음. auto.py도 매 실행 끝에 같은 점검을 로그에 남김)
 - 반영 뒤 valuelens.kr에서 페이지가 열리는지 확인
 
 ## 4. 마무리
 - 목록 페이지: 새 글이 없어도 매일 `python3 _ops/sync.py lists`를 실행 (갱신된 페이지만 파일이 바뀜)
+- llms.txt: 새 종목 페이지를 만들면 `python3 _ops/sync.py llms` 실행 (auto.py는 매 실행 때 자동)
 - 사이트맵: `python3 _ops/sync.py sitemap 바뀐주소...` (/ 와 /stock/, 바뀐 목록 페이지 포함)
 - 처리 표시: `python3 _ops/sync.py done LOGNO...`
 - main 반영분: 커밋 후 main에 push, 1~2분 뒤 https://valuelens.kr 에서 바뀐 페이지 확인

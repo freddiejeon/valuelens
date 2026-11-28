@@ -9,6 +9,8 @@
   python3 _ops/sync.py indexnow URL...  # IndexNow(빙, 네이버 등)에 변경 주소 통보
   python3 _ops/sync.py done LOGNO...    # 처리 완료 표시 (state.json)
   python3 _ops/sync.py lists           # 강의, 모의펀드, ETF, 리포트 브리핑 목록 페이지 재생성 (/lecture/, /fund/, /etf/, /brief/)
+  python3 _ops/sync.py llms            # llms.txt를 종목 페이지 목록으로 재생성 (auto.py 실행 때 자동)
+  python3 _ops/sync.py lint            # 종목 페이지 head 중복, canonical, 사이트맵 없는 주소 점검
 """
 import datetime as dt, html, json, os, re, sys, urllib.parse, urllib.request
 
@@ -102,6 +104,9 @@ def sitemap(urls):
     s = open(p, encoding="utf-8").read()
     today = dt.datetime.now(KST).strftime("%Y-%m-%d")
     for u in urls:
+        if not os.path.exists(local_path(u.replace("https://valuelens.kr/", "", 1))):
+            print("sitemap 건너뜀(파일 없음):", u)
+            continue
         pat = re.compile(r"(<loc>" + re.escape(u) + r"</loc>\s*<lastmod>)[^<]*(</lastmod>)")
         if pat.search(s):
             s = pat.sub(r"\g<1>" + today + r"\g<2>", s)
@@ -162,6 +167,80 @@ def ensure_ga():
             open(path, "w", encoding="utf-8", newline="\n").write(s)
             changed.append(os.path.relpath(path, ROOT).replace(os.sep, "/"))
     return changed
+
+
+def lint():
+    """종목 페이지 head 중복(다른 페이지 head를 통째로 복사한 경우)과 사이트맵의 없는 주소를 찾음. 문제 목록을 돌려줌."""
+    probs = []
+    for f in sorted(os.listdir(os.path.join(ROOT, "stock"))):
+        if not re.fullmatch(r"\d{6}\.html", f):
+            continue
+        s = open(os.path.join(ROOT, "stock", f), encoding="utf-8").read()
+        head = s[:s.find("</head>")]
+        canon = re.findall(r'<link rel="canonical" href="([^"]+)">', head)
+        if head.count("<title>") != 1 or canon != [f"https://valuelens.kr/stock/{f[:6]}"]:
+            probs.append(f"stock/{f}: head에 title {head.count('<title>')}개, canonical {canon}")
+    for u in re.findall(r"<loc>https://valuelens\.kr/([^<]*)</loc>", open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()):
+        if not os.path.exists(local_path(u)):
+            probs.append(f"sitemap.xml: 없는 주소 /{u}")
+    return probs
+
+
+LLMS_HEAD = """# 프레디의 가치망원경 Freddie's Value Lens
+
+> 가치투자자 프레디가 DART 공시와 KRX 종가를 직접 확인해 쓴 한국 상장사 분석 글을 종목별, 주제별로 정리한 안내 사이트입니다. 각 페이지는 글마다 1~2문장 요약과 최신 판단을 담고, 전문은 네이버 블로그 원문(https://blog.naver.com/journk)으로 연결합니다.
+
+- 글쓴이: 프레디. 신용정보회사와 은행 근무 후 20여 년간 여러 회사를 창업해 CEO로 경영하고 스타트업 CFO로 활동한 가치투자자
+- 수치 표기: 괄호 안에 출처와 기준일(DART 공시일, KRX 종가)을 적고, 프레디의 추정은 「필자 계산」으로 구분합니다
+- 의견이 바뀐 예전 글은 당시 판단이며, 종목 페이지의 「프레디의 최신 판단」이 현재 의견입니다
+- 모든 내용은 투자 권유가 아닙니다
+
+## 주요 페이지
+
+- [첫 화면](https://valuelens.kr/): 사이트 소개, 최근 분석한 종목, 글쓴이 소개
+- [종목 분석 목록](https://valuelens.kr/stock/): 분석한 상장사 전체, 최근 분석 순
+- [주린이 주식투자 강의 목록](https://valuelens.kr/lecture/): 초보 투자자를 위한 강의와 특강
+- [모의펀드 「프레디 가치망원경 1호」 운용보고](https://valuelens.kr/fund/): 1억원 모의펀드의 주간 운용보고와 매매보고서
+- [ETF 투자 글 목록](https://valuelens.kr/etf/): ETF 분석과 투자 이야기
+- [증권사 리포트 브리핑](https://valuelens.kr/brief/): 그날 나온 증권사 리포트 요약
+
+## 종목 분석
+
+"""
+
+LLMS_TAIL = """
+## 글쓴이 채널
+
+- [네이버 블로그 프레디의 가치망원경](https://blog.naver.com/journk): 모든 분석 글의 원문
+- [스레드 @freddie.valuelens](https://www.threads.net/@freddie.valuelens)
+- [유튜브](https://www.youtube.com/channel/UC_8D3zYDjXBb3jaqzlnoljQ)
+"""
+
+
+def llms():
+    """llms.txt를 stock 폴더의 종목 페이지 목록으로 다시 만듦. 바뀌면 True."""
+    rows = []
+    for f in os.listdir(os.path.join(ROOT, "stock")):
+        if re.fullmatch(r"\d{6}\.html", f):
+            s = open(os.path.join(ROOT, "stock", f), encoding="utf-8").read()
+            name = html.unescape(re.search(r"<title>([^<]+)", s).group(1)).split(" 주가")[0]
+            rows.append((name, f[:6]))
+    body = "\n".join(f"- [{n} 분석 모음](https://valuelens.kr/stock/{c}): 최신 판단과 지금까지의 분석 글 목록" for n, c in sorted(rows))
+    txt = (LLMS_HEAD + body + "\n" + LLMS_TAIL).replace("·", ", ")
+    p = os.path.join(ROOT, "llms.txt")
+    old = open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+    if old == txt:
+        return False
+    open(p, "w", encoding="utf-8", newline="\n").write(txt)
+    print("llms.txt 갱신:", len(rows), "개 종목")
+    return True
+
+
+def local_path(u):
+    """사이트 주소 경로(예: stock/000660, etf/)를 저장소 파일 경로로 바꿈."""
+    if u == "" or u.endswith("/"):
+        return os.path.join(ROOT, u, "index.html")
+    return os.path.join(ROOT, u + ".html")
 
 
 def esc(t):
@@ -262,6 +341,12 @@ def main():
     elif cmd == "ga":
         for f in ensure_ga():
             print("GA 태그 추가:", f)
+    elif cmd == "llms":
+        llms()
+    elif cmd == "lint":
+        probs = lint()
+        print("\n".join(probs) or "점검 통과")
+        sys.exit(1 if probs else 0)
     elif cmd == "done":
         st = load_state()
         for a in args:
