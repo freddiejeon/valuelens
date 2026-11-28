@@ -25,7 +25,8 @@ KST = sync.KST
 LIST_CATS = {s["cat"] for s in sync.SECTIONS.values()}
 MODEL = "deepseek/deepseek-v4.1-flash-1017"
 TODAY = dt.datetime.now(KST).strftime("%Y-%m-%d")
-LOG = r"G:\내 드라이브\60_투자\valuelens_sync\last_run.log"
+LOG = r"G:\내 드라이브\60_투자\valuelens_sync\last_run.log"  # 마지막 실행만 (덮어씀)
+RUNLOG_DIR = os.path.join(HERE, "logs")  # 실행마다 쌓이는 기록 (_ops/logs/auto_YYYY-MM.log, git 제외)
 
 
 # ---------- 공통 ----------
@@ -52,7 +53,12 @@ def push(*a, tries=3, wait=30):
 def gh(*a):
     r = subprocess.run(["gh", *a], cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
     if r.returncode:
-        raise RuntimeError(f"gh {' '.join(a)} 실패: {r.stderr.strip()}")
+        hint = ""
+        if "auth login" in r.stderr:  # 예약 작업 환경에서 gh 로그인 정보를 못 찾는 경우 원인 추적용
+            cfg = os.environ.get("GH_CONFIG_DIR") or os.path.join(os.environ.get("APPDATA", "(APPDATA 없음)"), "GitHub CLI")
+            hint = (f" [진단: 사용자 {os.environ.get('USERNAME')}, 설정 폴더 {cfg}, "
+                    f"hosts.yml {'있음' if os.path.exists(os.path.join(cfg, 'hosts.yml')) else '없음'}]")
+        raise RuntimeError(f"gh {' '.join(a)} 실패: {r.stderr.strip()}{hint}")
     return r.stdout.strip()
 
 
@@ -304,15 +310,28 @@ def main():
         import io, traceback
         buf, real = io.StringIO(), sys.stdout
         sys.stdout = buf
+        start = dt.datetime.now(KST)
+        result = "정상 종료"
         try:
             run(a)
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc(file=buf)
+            result = f"중단: {type(e).__name__}: {e}"
             raise
         finally:
             sys.stdout = real
-            open(LOG, "w", encoding="utf-8").write(buf.getvalue())
-            print(buf.getvalue())
+            out = buf.getvalue()
+            if "- 오류:" in out or "검사 실패" in out:
+                result += " (글 처리 오류 있음)"
+            try:
+                open(LOG, "w", encoding="utf-8").write(out)
+            except OSError as e:  # 구글 드라이브가 안 붙은 때도 _ops/logs 기록은 남김
+                out += f"\n(last_run.log 저장 실패: {e})\n"
+            os.makedirs(RUNLOG_DIR, exist_ok=True)
+            with open(os.path.join(RUNLOG_DIR, f"auto_{start:%Y-%m}.log"), "a", encoding="utf-8") as f:
+                f.write(f"===== 시작 {start:%Y-%m-%d %H:%M:%S} / 종료 {dt.datetime.now(KST):%H:%M:%S} / {result}\n"
+                        f"{out.rstrip()}\n\n")
+            print(out)
     else:
         run(a)
 
