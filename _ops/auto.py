@@ -122,7 +122,10 @@ PROMPT = """너는 가치투자 블로그 글을 개인 사이트 종목 페이�
  "종가": 글에 적힌 기준 종가 정수(원) 또는 null,
  "종가일": "그 종가의 날짜 YYYY-MM-DD" 또는 null,
  "판단": "2~3문장. 첫 문장은 'YYYY년 M월 D일 기준 의견.' 형식. 이어서 판단의 핵심 근거 숫자 1~2개를 쓰고, 공시나 주가 숫자 뒤에는 원문에 적힌 출처와 날짜를 괄호로, 필자 추정치(목표주가, 내재가치) 뒤에는 (필자 계산)을 붙인다.",
- "카드": "1~2문장. 이 글이 무엇을 판단했는지 새 문장으로 요약 (~습니다체)."
+ "카드": "1~2문장. 이 글이 무엇을 판단했는지 새 문장으로 요약 (~습니다체).",
+ "한줄답": "1문장. 종목 페이지 맨 앞에 둘 바로 답. 현재 의견과, 원문에 있으면 목표주가나 가치 범위를 담는다. 필자 추정 가격 뒤에는 (필자 계산)을 붙인다 (~습니다체).",
+ "수치": [{{"항목": "짧은 이름 (예: 3분기 영업이익)", "수치": "원문 표기 그대로 (예: 599억원)", "출처": "원문에 적힌 출처와 날짜 (예: DART 3분기보고서, 2026.11.16 공시) 또는 필자 계산"}}],
+ "사도되나": "2문장. '이 회사 주가, 지금 사도 되나요?'라는 질문에 필자의 현재 판단과 판단이 바뀔 조건을 새 문장으로 답한다 (~습니다체)."
 }}
 
 규칙
@@ -130,6 +133,7 @@ PROMPT = """너는 가치투자 블로그 글을 개인 사이트 종목 페이�
 - 원문 문장을 그대로 옮기지 말고 새로 쓴다. ~습니다체.
 - 가운데 점(·)을 쓰지 않는다. 나열은 쉼표나 '와/과'.
 - 매수를 권하는 표현(꼭 사세요 등)을 쓰지 않는다.
+- "수치"는 판단의 근거가 되는 숫자 3~5개. 원문에 숫자와 출처가 함께 있는 것만 고른다.
 
 [글 제목]
 {title}
@@ -147,8 +151,17 @@ def check(out, body):
     """DeepSeek 결과 검사. 문제 목록을 돌려준다 (비면 통과)."""
     probs = []
     nb = re.sub(r"[\s,]", "", body)
-    for k in ("판단", "카드"):
+    for k in ("판단", "카드", "한줄답", "사도되나", "수치"):
         txt = out.get(k) or ""
+        if k == "수치":
+            rows = txt if isinstance(txt, list) else []
+            if not rows:
+                probs.append("수치 비어 있음")
+            for r in rows:
+                for n in nums(str(r.get("수치", ""))):
+                    if n.replace(",", "") not in nb:
+                        probs.append(f"수치 {r.get('항목')} {n} 원문에 없음")
+            continue
         if not txt:
             probs.append(f"{k} 비어 있음")
             continue
@@ -182,6 +195,20 @@ def ymd_kor(s):
     return f"{y}년 {int(m)}월 {int(d)}일"
 
 
+def key_facts(s, out):
+    """최신 판단 상자 맨 앞의 한 줄 답, 핵심 수치 표, 「지금 사도 되나요?」 문단을 넣거나 바꿈."""
+    name = re.search(r"<h1>(.*?)\(\d{6}\) 분석 모음</h1>", s).group(1)
+    s = re.sub(r'<div class="box">(<p class="answer">.*?</p>)?',
+               lambda _: f'<div class="box"><p class="answer">한 줄 답: {html.escape(clean(out["한줄답"]))}</p>', s, count=1, flags=re.S)
+    rows = "\n".join(f'<tr><td>{html.escape(clean(r["항목"]))}</td><td class="n">{html.escape(clean(r["수치"]))}</td><td class="src">{html.escape(clean(r["출처"]))}</td></tr>'
+                     for r in out["수치"][:5])
+    sec = (f'<section class="kf">\n<h2>{name} 핵심 수치는?</h2>\n<table class="facts">\n<tr><th>항목</th><th>수치</th><th>출처, 기준일</th></tr>\n{rows}\n</table>\n'
+           f'<h2>{name} 주가, 지금 사도 되나요?</h2>\n<p>{html.escape(clean(out["사도되나"]))} 투자 권유가 아닙니다.</p>\n</section>\n')
+    if '<section class="kf">' in s:
+        return re.sub(r'<section class="kf">.*?</section>\n', lambda _: sec, s, count=1, flags=re.S)
+    return s.replace("<h2>지금까지 판단은 어떻게 바뀌었나?</h2>", sec + "<h2>지금까지 판단은 어떻게 바뀌었나?</h2>", 1)
+
+
 def update_stock_page(code, post, out, card_only=False):
     """stock/{code}.html 에 새 글을 반영. 바꾼 파일 목록을 돌려준다."""
     p = f"stock/{code}.html"
@@ -202,6 +229,7 @@ def update_stock_page(code, post, out, card_only=False):
     if not card_only:
         s = re.sub(r'<div class="box">.*?</div>', lambda _: f'<div class="box">{html.escape(clean(out["판단"]))}</div>', s, count=1, flags=re.S)
         s = re.sub(r'(<a class="go" href=")[^"]+(">최신 분석 전문 읽기)', lambda m: m.group(1) + url + m.group(2), s, count=1)
+        s = key_facts(s, out)
 
     # 설명 문구 (meta, og, JSON-LD)
     old_desc = re.search(r'<meta name="description" content="([^"]*)">', s).group(1)
@@ -284,7 +312,7 @@ def stock_pr(p, codes, card_only, log, dry):
         return True
     body = sync.body(p["logNo"])[:8000]
     out = deepseek(PROMPT.format(title=p["title"], body=body))
-    probs = check(out, body) if not card_only else [x for x in check(out, body) if not x.startswith("판단")]
+    probs = check(out, body) if not card_only else [x for x in check(out, body) if not x.startswith(("판단", "한줄답", "사도되나", "수치"))]
     if probs:
         log.append(f"- 보류: {p['title']} → DeepSeek 결과 검사 실패 ({'; '.join(probs)})")
         return False
